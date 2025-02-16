@@ -121,7 +121,7 @@ namespace MTG_Proxy_to_PDF
 
             string outputFile = Path.Combine(sourceFolderPath, $"{textBox1.Text}.pdf");
             pdf.Save(outputFile);
-            MessageBox.Show("PDF generálása és képek áthelyezése befejeződött!");
+            MessageBox.Show("PDF generation is finished!");
         }
     }
 }
