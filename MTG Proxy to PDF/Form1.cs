@@ -10,11 +10,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Reflection.Emit;
 
 namespace MTG_Proxy_to_PDF
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
@@ -25,9 +28,10 @@ namespace MTG_Proxy_to_PDF
 
             this.MinimizeBox = true;
 
-            this.Size = new System.Drawing.Size(500, 125);
+            this.Size = new System.Drawing.Size(500, 200);
 
             btnGeneratePdf.FlatStyle = FlatStyle.Flat;
+            progressBar1.Hide();
         }
 
         private void btnGeneratePdf_Click(object sender, EventArgs e)
@@ -39,8 +43,8 @@ namespace MTG_Proxy_to_PDF
 
             if (folderDialog.ShowDialog() == DialogResult.OK)
             {
-                sourceFolderPath   = folderDialog.SelectedPath;
-                destinationFolderPath = folderDialog.SelectedPath + "/Done";
+                sourceFolderPath = folderDialog.SelectedPath;
+                destinationFolderPath = folderDialog.SelectedPath + "/PDF";
             }
 
             var imageFiles = Directory.GetFiles(sourceFolderPath, "*.png");
@@ -48,6 +52,9 @@ namespace MTG_Proxy_to_PDF
             {
                 Directory.CreateDirectory(destinationFolderPath);
             }
+
+            progressBar1.Maximum = imageFiles.Length;
+            progressBar1.Show();
 
             PdfDocument pdf = new PdfDocument();
 
@@ -85,9 +92,10 @@ namespace MTG_Proxy_to_PDF
                         gfx.DrawImage(image, xPos, yPos, widthInPoints, heightInPoints);
 
                         string destFilePath = Path.Combine(destinationFolderPath, Path.GetFileName(imageFiles[imageIndex]));
-                        File.Move(imageFiles[imageIndex], destFilePath);
+                        //File.Move(imageFiles[imageIndex], destFilePath);
 
                         imageIndex++;
+                        progressBar1.Value++;
                     }
                 }
             }
@@ -111,17 +119,21 @@ namespace MTG_Proxy_to_PDF
                             gfx.DrawImage(image, xPos, yPos, widthInPoints, heightInPoints);
 
                             string destFilePath = Path.Combine(destinationFolderPath, Path.GetFileName(imageFiles[imageIndex]));
-                            File.Move(imageFiles[imageIndex], destFilePath);
+                            //File.Move(imageFiles[imageIndex], destFilePath);
 
                             imageIndex++;
+                            progressBar1.Value++;
+
                         }
                     }
                 }
             }
 
-            string outputFile = Path.Combine(sourceFolderPath, $"{textBox1.Text}.pdf");
+            string outputFile = Path.Combine(sourceFolderPath + "/PDF", $"{textBox1.Text}.pdf");
             pdf.Save(outputFile);
             MessageBox.Show("PDF generation is finished!");
+            progressBar1.Hide();
+            progressBar1.Value = 0;
         }
     }
 }
