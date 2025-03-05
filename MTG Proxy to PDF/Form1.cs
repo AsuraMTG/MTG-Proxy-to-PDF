@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
-
 namespace MTG_Proxy_to_PDF
 {
     public partial class Form1 : Form
@@ -24,8 +23,6 @@ namespace MTG_Proxy_to_PDF
             this.MaximizeBox = false;
 
             this.MinimizeBox = true;
-
-            this.Size = new System.Drawing.Size(500, 125);
 
             btnGeneratePdf.FlatStyle = FlatStyle.Flat;
         }
@@ -74,6 +71,7 @@ namespace MTG_Proxy_to_PDF
 
             for (int row = 0; row < rows; row++)
             {
+
                 for (int col = 0; col < columns; col++)
                 {
                     xPos = leftMargin + col * (widthInPoints + horizontalSpacing);
@@ -81,11 +79,16 @@ namespace MTG_Proxy_to_PDF
 
                     if (imageIndex < imageFiles.Length)
                     {
-                        XImage image = XImage.FromFile(imageFiles[imageIndex]);
-                        gfx.DrawImage(image, xPos, yPos, widthInPoints, heightInPoints);
 
-                        string destFilePath = Path.Combine(destinationFolderPath, Path.GetFileName(imageFiles[imageIndex]));
-                        File.Move(imageFiles[imageIndex], destFilePath);
+                        XImage image = XImage.FromFile(imageFiles[imageIndex]);
+
+                        pictureBox1.Image = Image.FromFile(imageFiles[imageIndex]);
+
+                        Application.DoEvents();
+
+                        System.Threading.Thread.Sleep(100);
+
+                        gfx.DrawImage(image, xPos, yPos, widthInPoints, heightInPoints);
 
                         imageIndex++;
                     }
@@ -109,9 +112,6 @@ namespace MTG_Proxy_to_PDF
 
                             XImage image = XImage.FromFile(imageFiles[imageIndex]);
                             gfx.DrawImage(image, xPos, yPos, widthInPoints, heightInPoints);
-
-                            string destFilePath = Path.Combine(destinationFolderPath, Path.GetFileName(imageFiles[imageIndex]));
-                            File.Move(imageFiles[imageIndex], destFilePath);
 
                             imageIndex++;
                         }
