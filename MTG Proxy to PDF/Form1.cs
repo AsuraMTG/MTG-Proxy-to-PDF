@@ -187,11 +187,17 @@ namespace MTG_Proxy_to_PDF
                 string pngUrl = cardData.image_uris.png;
 
                 string savePath = path + $"{card}.png";
+                int counter = 1;
+                while (File.Exists(savePath))
+                {
+                    savePath = Path.Combine(path + $"{card} ({counter}).png");
+                    counter++;
+                }
 
                 var imageBytes = await client.GetByteArrayAsync(pngUrl);
-
+                
                 File.WriteAllBytes(savePath, imageBytes);
-
+                
                 return savePath;
             }
             catch (Exception ex)
@@ -211,7 +217,7 @@ namespace MTG_Proxy_to_PDF
             if (folderDialog.ShowDialog() == DialogResult.OK)
             {
                 sourceFolderPath = folderDialog.SelectedPath;
-                destinationFolderPath = folderDialog.SelectedPath + "/Downloaded Images";
+                destinationFolderPath = folderDialog.SelectedPath + "/Downloaded Images/";
             }
             else
                 return;
@@ -221,18 +227,35 @@ namespace MTG_Proxy_to_PDF
                 Directory.CreateDirectory(destinationFolderPath);
             }
 
-            string cardName = "Vorinclex, Voice of Hunger";
+            // Get the card names from the TextBox, assuming each line is a card name
+            string[] cardNames = textBoxPureList.Lines; // `textBox1` is your TextBox control
 
-            string imageFilePath = await FetchCard(cardName, destinationFolderPath + "/Downloaded Images");
+            foreach (var cardName in cardNames)
+            {
+                if (string.IsNullOrWhiteSpace(cardName)) // Skip empty lines
+                    continue;
 
-            if (imageFilePath != "ERROR")
-            {
-                MessageBox.Show($"A kép sikeresen elmentve itt: {imageFilePath}", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Fetch the image for the current card
+                string imageFilePath = await FetchCard(cardName, destinationFolderPath);
+
             }
-            else
-            {
-                MessageBox.Show("Hiba történt a kép letöltésekor.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+        }
+
+
+
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            // Beolvasott input szöveg sorokra bontása
+            var inputList = new List<string>(textBoxDeckList.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
+
+            // A feldolgozott lista
+            List<string> resultList = DeckListConverter.ProcessList(inputList);
+
+            // Az eredmények kiírása a outputTextBox-ba
+            textBoxPureList.Text = string.Join(Environment.NewLine, resultList);
         }
     }
 }
