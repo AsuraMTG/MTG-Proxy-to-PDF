@@ -12,6 +12,12 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Reflection.Emit;
+using System.Net.Http;
+using System.Net;
+using Microsoft.Extensions.Logging;
+using System.Management.Instrumentation;
+using Newtonsoft.Json;
+using MySqlX.XDevAPI;
 
 namespace MTG_Proxy_to_PDF
 {
@@ -148,6 +154,85 @@ namespace MTG_Proxy_to_PDF
             labelCounter.Text = "PDF generation is Finished!";
             pictureBoxCard.Image = Image.FromFile("Magic_card_back.png");
             textBoxFileName.Text = "";
+        }
+
+        private static readonly HttpClient client = new HttpClient();
+        public async Task<string> FetchCard(string card, string path)
+        {
+            try
+            {
+                string encodedCardName = Uri.EscapeDataString(card);
+                string url = $"https://api.scryfall.com/cards/named?fuzzy={encodedCardName}";
+
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("User-Agent", "MTG Proxy to PDF");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorDetails = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"HTTP hiba! Státuszkód: {response.StatusCode}, Részletek: {errorDetails}");
+                }
+
+                string json = await response.Content.ReadAsStringAsync();
+                dynamic cardData = JsonConvert.DeserializeObject(json);
+
+                if (cardData.image_uris == null || cardData.image_uris.png == null)
+                {
+                    throw new Exception("A kártyához nincs elérhető PNG kép.");
+                }
+
+                string pngUrl = cardData.image_uris.png;
+
+                string savePath = path + $"{card}.png";
+
+                var imageBytes = await client.GetByteArrayAsync(pngUrl);
+
+                File.WriteAllBytes(savePath, imageBytes);
+
+                return savePath;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba történt: {ex.Message}", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "ERROR";
+            }
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+
+            string sourceFolderPath = "";
+            string destinationFolderPath = "";
+
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+            {
+                sourceFolderPath = folderDialog.SelectedPath;
+                destinationFolderPath = folderDialog.SelectedPath + "/Downloaded Images";
+            }
+            else
+                return;
+
+            if (!Directory.Exists(destinationFolderPath))
+            {
+                Directory.CreateDirectory(destinationFolderPath);
+            }
+
+            string cardName = "Vorinclex, Voice of Hunger";
+
+            string imageFilePath = await FetchCard(cardName, destinationFolderPath + "/Downloaded Images");
+
+            if (imageFilePath != "ERROR")
+            {
+                MessageBox.Show($"A kép sikeresen elmentve itt: {imageFilePath}", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Hiba történt a kép letöltésekor.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
