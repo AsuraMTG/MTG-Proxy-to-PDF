@@ -206,9 +206,10 @@ namespace MTG_Proxy_to_PDF
                 return "ERROR";
             }
         }
-
         private async void button1_Click(object sender, EventArgs e)
         {
+            labelDownloadFinished.Text = "";
+            labelConvertNumber.Text = "";
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
 
             string sourceFolderPath = "";
@@ -227,35 +228,27 @@ namespace MTG_Proxy_to_PDF
                 Directory.CreateDirectory(destinationFolderPath);
             }
 
-            // Get the card names from the TextBox, assuming each line is a card name
-            string[] cardNames = textBoxPureList.Lines; // `textBox1` is your TextBox control
+            string[] cardNames = textBoxPureList.Lines;
 
             foreach (var cardName in cardNames)
             {
-                if (string.IsNullOrWhiteSpace(cardName)) // Skip empty lines
+                if (string.IsNullOrWhiteSpace(cardName))
                     continue;
 
-                // Fetch the image for the current card
                 string imageFilePath = await FetchCard(cardName, destinationFolderPath);
-
             }
+            labelDownloadFinished.Text = "Download Finished!";
         }
-
-
-
-
-
         private void button2_Click(object sender, EventArgs e)
         {
-
-            // Beolvasott input szöveg sorokra bontása
+            labelDownloadFinished.Text = "";
+            labelConvertNumber.Text = "";
             var inputList = new List<string>(textBoxDeckList.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
 
-            // A feldolgozott lista
             List<string> resultList = DeckListConverter.ProcessList(inputList);
 
-            // Az eredmények kiírása a outputTextBox-ba
             textBoxPureList.Text = string.Join(Environment.NewLine, resultList);
+            labelConvertNumber.Text = $"Converted {resultList.Count} cards";
         }
     }
 }

@@ -30,19 +30,23 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnGeneratePdf = new System.Windows.Forms.Button();
-            this.fileName = new System.Windows.Forms.Label();
+            this.labelFileName = new System.Windows.Forms.Label();
             this.textBoxFileName = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxFileName = new System.Windows.Forms.GroupBox();
             this.pictureBoxCard = new System.Windows.Forms.PictureBox();
             this.labelCounter = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBoxDeckList = new System.Windows.Forms.TextBox();
+            this.groupBoxDownload = new System.Windows.Forms.GroupBox();
             this.textBoxPureList = new System.Windows.Forms.TextBox();
-            this.groupBox1.SuspendLayout();
+            this.buttonDownload = new System.Windows.Forms.Button();
+            this.buttonConvert = new System.Windows.Forms.Button();
+            this.textBoxDeckList = new System.Windows.Forms.TextBox();
+            this.groupBoxDeckList = new System.Windows.Forms.GroupBox();
+            this.labelDownloadFinished = new System.Windows.Forms.Label();
+            this.labelConvertNumber = new System.Windows.Forms.Label();
+            this.groupBoxFileName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCard)).BeginInit();
-            this.groupBox2.SuspendLayout();
+            this.groupBoxDownload.SuspendLayout();
+            this.groupBoxDeckList.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnGeneratePdf
@@ -58,16 +62,16 @@
             this.btnGeneratePdf.UseVisualStyleBackColor = false;
             this.btnGeneratePdf.Click += new System.EventHandler(this.btnGeneratePdf_Click);
             // 
-            // fileName
+            // labelFileName
             // 
-            this.fileName.AutoSize = true;
-            this.fileName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.fileName.Location = new System.Drawing.Point(7, 24);
-            this.fileName.Margin = new System.Windows.Forms.Padding(6);
-            this.fileName.Name = "fileName";
-            this.fileName.Size = new System.Drawing.Size(75, 16);
-            this.fileName.TabIndex = 2;
-            this.fileName.Text = "File Name: ";
+            this.labelFileName.AutoSize = true;
+            this.labelFileName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.labelFileName.Location = new System.Drawing.Point(7, 24);
+            this.labelFileName.Margin = new System.Windows.Forms.Padding(6);
+            this.labelFileName.Name = "labelFileName";
+            this.labelFileName.Size = new System.Drawing.Size(75, 16);
+            this.labelFileName.TabIndex = 2;
+            this.labelFileName.Text = "File Name: ";
             // 
             // textBoxFileName
             // 
@@ -75,20 +79,20 @@
             this.textBoxFileName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.textBoxFileName.Location = new System.Drawing.Point(91, 21);
             this.textBoxFileName.Name = "textBoxFileName";
-            this.textBoxFileName.Size = new System.Drawing.Size(536, 22);
+            this.textBoxFileName.Size = new System.Drawing.Size(585, 22);
             this.textBoxFileName.TabIndex = 3;
             // 
-            // groupBox1
+            // groupBoxFileName
             // 
-            this.groupBox1.Controls.Add(this.textBoxFileName);
-            this.groupBox1.Controls.Add(this.fileName);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(694, 65);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
+            this.groupBoxFileName.Controls.Add(this.textBoxFileName);
+            this.groupBoxFileName.Controls.Add(this.labelFileName);
+            this.groupBoxFileName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxFileName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.groupBoxFileName.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxFileName.Name = "groupBoxFileName";
+            this.groupBoxFileName.Size = new System.Drawing.Size(694, 65);
+            this.groupBoxFileName.TabIndex = 4;
+            this.groupBoxFileName.TabStop = false;
             // 
             // pictureBoxCard
             // 
@@ -113,54 +117,92 @@
             this.labelCounter.Size = new System.Drawing.Size(0, 16);
             this.labelCounter.TabIndex = 4;
             // 
-            // groupBox2
+            // groupBoxDownload
             // 
-            this.groupBox2.Controls.Add(this.textBoxPureList);
-            this.groupBox2.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBox2.Location = new System.Drawing.Point(482, 74);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 237);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "groupBox2";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(482, 317);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(601, 317);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // textBoxDeckList
-            // 
-            this.textBoxDeckList.Location = new System.Drawing.Point(277, 74);
-            this.textBoxDeckList.Multiline = true;
-            this.textBoxDeckList.Name = "textBoxDeckList";
-            this.textBoxDeckList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDeckList.Size = new System.Drawing.Size(199, 266);
-            this.textBoxDeckList.TabIndex = 0;
+            this.groupBoxDownload.Controls.Add(this.textBoxPureList);
+            this.groupBoxDownload.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBoxDownload.Location = new System.Drawing.Point(482, 74);
+            this.groupBoxDownload.Name = "groupBoxDownload";
+            this.groupBoxDownload.Size = new System.Drawing.Size(200, 280);
+            this.groupBoxDownload.TabIndex = 7;
+            this.groupBoxDownload.TabStop = false;
+            this.groupBoxDownload.Text = "Download list";
             // 
             // textBoxPureList
             // 
+            this.textBoxPureList.BackColor = System.Drawing.SystemColors.MenuText;
+            this.textBoxPureList.ForeColor = System.Drawing.SystemColors.Info;
             this.textBoxPureList.Location = new System.Drawing.Point(6, 21);
             this.textBoxPureList.Multiline = true;
             this.textBoxPureList.Name = "textBoxPureList";
+            this.textBoxPureList.ReadOnly = true;
             this.textBoxPureList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxPureList.Size = new System.Drawing.Size(188, 210);
+            this.textBoxPureList.Size = new System.Drawing.Size(188, 253);
             this.textBoxPureList.TabIndex = 11;
+            // 
+            // buttonDownload
+            // 
+            this.buttonDownload.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.buttonDownload.Location = new System.Drawing.Point(592, 360);
+            this.buttonDownload.Name = "buttonDownload";
+            this.buttonDownload.Size = new System.Drawing.Size(90, 29);
+            this.buttonDownload.TabIndex = 9;
+            this.buttonDownload.Text = "Download";
+            this.buttonDownload.UseVisualStyleBackColor = false;
+            this.buttonDownload.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // buttonConvert
+            // 
+            this.buttonConvert.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.buttonConvert.Location = new System.Drawing.Point(482, 360);
+            this.buttonConvert.Name = "buttonConvert";
+            this.buttonConvert.Size = new System.Drawing.Size(75, 29);
+            this.buttonConvert.TabIndex = 10;
+            this.buttonConvert.Text = "Convert";
+            this.buttonConvert.UseVisualStyleBackColor = false;
+            this.buttonConvert.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // textBoxDeckList
+            // 
+            this.textBoxDeckList.BackColor = System.Drawing.SystemColors.MenuText;
+            this.textBoxDeckList.ForeColor = System.Drawing.SystemColors.Info;
+            this.textBoxDeckList.Location = new System.Drawing.Point(6, 21);
+            this.textBoxDeckList.Multiline = true;
+            this.textBoxDeckList.Name = "textBoxDeckList";
+            this.textBoxDeckList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxDeckList.Size = new System.Drawing.Size(188, 288);
+            this.textBoxDeckList.TabIndex = 0;
+            // 
+            // groupBoxDeckList
+            // 
+            this.groupBoxDeckList.Controls.Add(this.textBoxDeckList);
+            this.groupBoxDeckList.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBoxDeckList.Location = new System.Drawing.Point(277, 74);
+            this.groupBoxDeckList.Name = "groupBoxDeckList";
+            this.groupBoxDeckList.Size = new System.Drawing.Size(200, 315);
+            this.groupBoxDeckList.TabIndex = 12;
+            this.groupBoxDeckList.TabStop = false;
+            this.groupBoxDeckList.Text = "Decklist:";
+            // 
+            // labelDownloadFinished
+            // 
+            this.labelDownloadFinished.AutoSize = true;
+            this.labelDownloadFinished.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.labelDownloadFinished.Location = new System.Drawing.Point(557, 398);
+            this.labelDownloadFinished.Margin = new System.Windows.Forms.Padding(6);
+            this.labelDownloadFinished.Name = "labelDownloadFinished";
+            this.labelDownloadFinished.Size = new System.Drawing.Size(0, 16);
+            this.labelDownloadFinished.TabIndex = 13;
+            // 
+            // labelConvertNumber
+            // 
+            this.labelConvertNumber.AutoSize = true;
+            this.labelConvertNumber.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.labelConvertNumber.Location = new System.Drawing.Point(479, 398);
+            this.labelConvertNumber.Margin = new System.Windows.Forms.Padding(6);
+            this.labelConvertNumber.Name = "labelConvertNumber";
+            this.labelConvertNumber.Size = new System.Drawing.Size(0, 16);
+            this.labelConvertNumber.TabIndex = 14;
             // 
             // Form1
             // 
@@ -168,22 +210,26 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(694, 451);
-            this.Controls.Add(this.textBoxDeckList);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.labelConvertNumber);
+            this.Controls.Add(this.labelDownloadFinished);
+            this.Controls.Add(this.groupBoxDeckList);
+            this.Controls.Add(this.buttonConvert);
+            this.Controls.Add(this.buttonDownload);
+            this.Controls.Add(this.groupBoxDownload);
             this.Controls.Add(this.labelCounter);
             this.Controls.Add(this.pictureBoxCard);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxFileName);
             this.Controls.Add(this.btnGeneratePdf);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "MTG Proxy to PDF";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxFileName.ResumeLayout(false);
+            this.groupBoxFileName.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCard)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupBoxDownload.ResumeLayout(false);
+            this.groupBoxDownload.PerformLayout();
+            this.groupBoxDeckList.ResumeLayout(false);
+            this.groupBoxDeckList.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,16 +237,19 @@
 
         #endregion
         private System.Windows.Forms.Button btnGeneratePdf;
-        private System.Windows.Forms.Label fileName;
+        private System.Windows.Forms.Label labelFileName;
         private System.Windows.Forms.TextBox textBoxFileName;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxFileName;
         private System.Windows.Forms.PictureBox pictureBoxCard;
         private System.Windows.Forms.Label labelCounter;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.GroupBox groupBoxDownload;
+        private System.Windows.Forms.Button buttonDownload;
+        private System.Windows.Forms.Button buttonConvert;
         private System.Windows.Forms.TextBox textBoxDeckList;
         private System.Windows.Forms.TextBox textBoxPureList;
+        private System.Windows.Forms.GroupBox groupBoxDeckList;
+        private System.Windows.Forms.Label labelDownloadFinished;
+        private System.Windows.Forms.Label labelConvertNumber;
     }
 }
 
