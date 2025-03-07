@@ -35,17 +35,15 @@
             this.groupBoxFileName = new System.Windows.Forms.GroupBox();
             this.pictureBoxCard = new System.Windows.Forms.PictureBox();
             this.labelCounter = new System.Windows.Forms.Label();
-            this.groupBoxDownload = new System.Windows.Forms.GroupBox();
-            this.textBoxPureList = new System.Windows.Forms.TextBox();
             this.buttonDownload = new System.Windows.Forms.Button();
-            this.buttonConvert = new System.Windows.Forms.Button();
             this.textBoxDeckList = new System.Windows.Forms.TextBox();
             this.groupBoxDeckList = new System.Windows.Forms.GroupBox();
             this.labelDownloadFinished = new System.Windows.Forms.Label();
             this.labelConvertNumber = new System.Windows.Forms.Label();
+            this.textBoxFolderName = new System.Windows.Forms.TextBox();
+            this.labelFolderName = new System.Windows.Forms.Label();
             this.groupBoxFileName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCard)).BeginInit();
-            this.groupBoxDownload.SuspendLayout();
             this.groupBoxDeckList.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,50 +115,16 @@
             this.labelCounter.Size = new System.Drawing.Size(0, 16);
             this.labelCounter.TabIndex = 4;
             // 
-            // groupBoxDownload
-            // 
-            this.groupBoxDownload.Controls.Add(this.textBoxPureList);
-            this.groupBoxDownload.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBoxDownload.Location = new System.Drawing.Point(482, 74);
-            this.groupBoxDownload.Name = "groupBoxDownload";
-            this.groupBoxDownload.Size = new System.Drawing.Size(200, 280);
-            this.groupBoxDownload.TabIndex = 7;
-            this.groupBoxDownload.TabStop = false;
-            this.groupBoxDownload.Text = "Download list";
-            // 
-            // textBoxPureList
-            // 
-            this.textBoxPureList.BackColor = System.Drawing.SystemColors.MenuText;
-            this.textBoxPureList.ForeColor = System.Drawing.SystemColors.Info;
-            this.textBoxPureList.Location = new System.Drawing.Point(6, 21);
-            this.textBoxPureList.Multiline = true;
-            this.textBoxPureList.Name = "textBoxPureList";
-            this.textBoxPureList.ReadOnly = true;
-            this.textBoxPureList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxPureList.Size = new System.Drawing.Size(188, 253);
-            this.textBoxPureList.TabIndex = 11;
-            // 
             // buttonDownload
             // 
             this.buttonDownload.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.buttonDownload.Location = new System.Drawing.Point(592, 360);
+            this.buttonDownload.Location = new System.Drawing.Point(482, 127);
             this.buttonDownload.Name = "buttonDownload";
-            this.buttonDownload.Size = new System.Drawing.Size(90, 29);
+            this.buttonDownload.Size = new System.Drawing.Size(203, 29);
             this.buttonDownload.TabIndex = 9;
             this.buttonDownload.Text = "Download";
             this.buttonDownload.UseVisualStyleBackColor = false;
-            this.buttonDownload.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // buttonConvert
-            // 
-            this.buttonConvert.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.buttonConvert.Location = new System.Drawing.Point(482, 360);
-            this.buttonConvert.Name = "buttonConvert";
-            this.buttonConvert.Size = new System.Drawing.Size(75, 29);
-            this.buttonConvert.TabIndex = 10;
-            this.buttonConvert.Text = "Convert";
-            this.buttonConvert.UseVisualStyleBackColor = false;
-            this.buttonConvert.Click += new System.EventHandler(this.button2_Click);
+            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
             // 
             // textBoxDeckList
             // 
@@ -198,11 +162,31 @@
             // 
             this.labelConvertNumber.AutoSize = true;
             this.labelConvertNumber.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.labelConvertNumber.Location = new System.Drawing.Point(479, 398);
+            this.labelConvertNumber.Location = new System.Drawing.Point(480, 165);
             this.labelConvertNumber.Margin = new System.Windows.Forms.Padding(6);
             this.labelConvertNumber.Name = "labelConvertNumber";
             this.labelConvertNumber.Size = new System.Drawing.Size(0, 16);
             this.labelConvertNumber.TabIndex = 14;
+            // 
+            // textBoxFolderName
+            // 
+            this.textBoxFolderName.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.textBoxFolderName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.textBoxFolderName.Location = new System.Drawing.Point(482, 99);
+            this.textBoxFolderName.Name = "textBoxFolderName";
+            this.textBoxFolderName.Size = new System.Drawing.Size(204, 22);
+            this.textBoxFolderName.TabIndex = 4;
+            // 
+            // labelFolderName
+            // 
+            this.labelFolderName.AutoSize = true;
+            this.labelFolderName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.labelFolderName.Location = new System.Drawing.Point(479, 74);
+            this.labelFolderName.Margin = new System.Windows.Forms.Padding(6);
+            this.labelFolderName.Name = "labelFolderName";
+            this.labelFolderName.Size = new System.Drawing.Size(92, 16);
+            this.labelFolderName.TabIndex = 4;
+            this.labelFolderName.Text = "Folder Name: ";
             // 
             // Form1
             // 
@@ -210,12 +194,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(694, 451);
+            this.Controls.Add(this.labelFolderName);
+            this.Controls.Add(this.textBoxFolderName);
             this.Controls.Add(this.labelConvertNumber);
             this.Controls.Add(this.labelDownloadFinished);
             this.Controls.Add(this.groupBoxDeckList);
-            this.Controls.Add(this.buttonConvert);
             this.Controls.Add(this.buttonDownload);
-            this.Controls.Add(this.groupBoxDownload);
             this.Controls.Add(this.labelCounter);
             this.Controls.Add(this.pictureBoxCard);
             this.Controls.Add(this.groupBoxFileName);
@@ -226,8 +210,6 @@
             this.groupBoxFileName.ResumeLayout(false);
             this.groupBoxFileName.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCard)).EndInit();
-            this.groupBoxDownload.ResumeLayout(false);
-            this.groupBoxDownload.PerformLayout();
             this.groupBoxDeckList.ResumeLayout(false);
             this.groupBoxDeckList.PerformLayout();
             this.ResumeLayout(false);
@@ -242,14 +224,13 @@
         private System.Windows.Forms.GroupBox groupBoxFileName;
         private System.Windows.Forms.PictureBox pictureBoxCard;
         private System.Windows.Forms.Label labelCounter;
-        private System.Windows.Forms.GroupBox groupBoxDownload;
         private System.Windows.Forms.Button buttonDownload;
-        private System.Windows.Forms.Button buttonConvert;
         private System.Windows.Forms.TextBox textBoxDeckList;
-        private System.Windows.Forms.TextBox textBoxPureList;
         private System.Windows.Forms.GroupBox groupBoxDeckList;
         private System.Windows.Forms.Label labelDownloadFinished;
         private System.Windows.Forms.Label labelConvertNumber;
+        private System.Windows.Forms.TextBox textBoxFolderName;
+        private System.Windows.Forms.Label labelFolderName;
     }
 }
 

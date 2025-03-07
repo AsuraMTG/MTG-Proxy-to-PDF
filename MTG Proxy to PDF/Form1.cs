@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using System.Management.Instrumentation;
 using Newtonsoft.Json;
 using MySqlX.XDevAPI;
+using System.Text.RegularExpressions;
 
 namespace MTG_Proxy_to_PDF
 {
@@ -156,13 +157,19 @@ namespace MTG_Proxy_to_PDF
             textBoxFileName.Text = "";
         }
 
+
+
+
+
+
+
+
         private static readonly HttpClient client = new HttpClient();
-        public async Task<string> FetchCard(string card, string path)
+        public async Task<string> FetchCard(string setCode, string collectorNumber, string path)
         {
             try
             {
-                string encodedCardName = Uri.EscapeDataString(card);
-                string url = $"https://api.scryfall.com/cards/named?fuzzy={encodedCardName}";
+                string url = $"https://api.scryfall.com/cards/{setCode}/{collectorNumber}";
 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("User-Agent", "MTG Proxy to PDF");
@@ -173,32 +180,37 @@ namespace MTG_Proxy_to_PDF
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorDetails = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"HTTP hiba! Státuszkód: {response.StatusCode}, Részletek: {errorDetails}\nURL: {url}", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     throw new Exception($"HTTP hiba! Státuszkód: {response.StatusCode}, Részletek: {errorDetails}");
                 }
 
                 string json = await response.Content.ReadAsStringAsync();
                 dynamic cardData = JsonConvert.DeserializeObject(json);
 
-                if (cardData.image_uris == null || cardData.image_uris.png == null)
+                if (cardData.layout == "transform" || cardData.layout == "modal_dfc")
+                {
+                    string frontImageUrl = cardData.card_faces[0].image_uris.png;
+                    string frontImagePath = Path.Combine(path, $"{setCode}-{collectorNumber}-front.png");
+                    await DownloadImage(frontImageUrl, frontImagePath);
+
+                    string backImageUrl = cardData.card_faces[1].image_uris.png;
+                    string backImagePath = Path.Combine(path, $"{setCode}-{collectorNumber}-back.png");
+                    await DownloadImage(backImageUrl, backImagePath);
+
+                    return "Kétoldalas kártya letöltve.";
+                }
+                else if (cardData.image_uris != null && cardData.image_uris.png != null)
+                {
+                    string pngUrl = cardData.image_uris.png;
+                    string savePath = Path.Combine(path, $"{setCode}-{collectorNumber}.png");
+                    await DownloadImage(pngUrl, savePath);
+
+                    return "Kép letöltve.";
+                }
+                else
                 {
                     throw new Exception("A kártyához nincs elérhető PNG kép.");
                 }
-
-                string pngUrl = cardData.image_uris.png;
-
-                string savePath = path + $"{card}.png";
-                int counter = 1;
-                while (File.Exists(savePath))
-                {
-                    savePath = Path.Combine(path + $"{card} ({counter}).png");
-                    counter++;
-                }
-
-                var imageBytes = await client.GetByteArrayAsync(pngUrl);
-                
-                File.WriteAllBytes(savePath, imageBytes);
-                
-                return savePath;
             }
             catch (Exception ex)
             {
@@ -206,10 +218,32 @@ namespace MTG_Proxy_to_PDF
                 return "ERROR";
             }
         }
-        private async void button1_Click(object sender, EventArgs e)
+
+        private async Task DownloadImage(string imageUrl, string savePath)
+        {
+            try
+            {
+                var imageBytes = await client.GetByteArrayAsync(imageUrl);
+
+                int counter = 1;
+                while (File.Exists(savePath))
+                {
+                    savePath = Path.Combine(Path.GetDirectoryName(savePath), $"{Path.GetFileNameWithoutExtension(savePath)} ({counter}){Path.GetExtension(savePath)}");
+                    counter++;
+                }
+
+                File.WriteAllBytes(savePath, imageBytes);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba történt a kép letöltésekor: {ex.Message}", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private async void buttonDownload_Click(object sender, EventArgs e)
         {
             labelDownloadFinished.Text = "";
             labelConvertNumber.Text = "";
+
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
 
             string sourceFolderPath = "";
@@ -218,7 +252,7 @@ namespace MTG_Proxy_to_PDF
             if (folderDialog.ShowDialog() == DialogResult.OK)
             {
                 sourceFolderPath = folderDialog.SelectedPath;
-                destinationFolderPath = folderDialog.SelectedPath + "/Downloaded Images/";
+                destinationFolderPath = folderDialog.SelectedPath + $"/{textBoxFolderName.Text}/";
             }
             else
                 return;
@@ -228,27 +262,57 @@ namespace MTG_Proxy_to_PDF
                 Directory.CreateDirectory(destinationFolderPath);
             }
 
-            string[] cardNames = textBoxPureList.Lines;
+            string[] cardLines = textBoxDeckList.Lines;
 
-            foreach (var cardName in cardNames)
+            foreach (var line in cardLines)
             {
-                if (string.IsNullOrWhiteSpace(cardName))
+                if (string.IsNullOrWhiteSpace(line))
                     continue;
 
-                string imageFilePath = await FetchCard(cardName, destinationFolderPath);
+                Match match = Regex.Match(line, @"^(\d+)\s+(.+?)\s*\((\w+)\)\s*(\S+)(?:\s*\*?[A-Za-z]*\*?)?$");
+
+                if (match.Success)
+                {
+                    int count = int.Parse(match.Groups[1].Value);
+
+                    string setCode = match.Groups[3].Value;
+
+                    string collectorNumber = match.Groups[4].Value;
+
+                    setCode = setCode.Replace("★", "").Trim();
+                    collectorNumber = collectorNumber.Replace("★", "").Trim();
+
+                    if (setCode == "PLST" && collectorNumber.Contains("-"))
+                    {
+                    }
+                    else
+                    {
+                        collectorNumber = collectorNumber.Replace("-", "");
+                    }
+
+                    string url = $"https://api.scryfall.com/cards/{setCode}/{collectorNumber}";
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        try
+                        {
+                            string imageFilePath = await FetchCard(setCode, collectorNumber, destinationFolderPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Hiba a kártya letöltésekor: {url}\nRészletek: {ex.Message}", "Letöltési Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
+                    labelConvertNumber.Text = $"{Array.IndexOf(cardLines, line) + 1} / {cardLines.Length}";
+                }
+                else
+                {
+                    MessageBox.Show($"Nem sikerült feldolgozni a sort: {line}", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
+
             labelDownloadFinished.Text = "Download Finished!";
-        }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            labelDownloadFinished.Text = "";
-            labelConvertNumber.Text = "";
-            var inputList = new List<string>(textBoxDeckList.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
-
-            List<string> resultList = DeckListConverter.ProcessList(inputList);
-
-            textBoxPureList.Text = string.Join(Environment.NewLine, resultList);
-            labelConvertNumber.Text = $"Converted {resultList.Count} cards";
         }
     }
 }
