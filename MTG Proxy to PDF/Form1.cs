@@ -157,13 +157,6 @@ namespace MTG_Proxy_to_PDF
             textBoxFileName.Text = "";
         }
 
-
-
-
-
-
-
-
         private static readonly HttpClient client = new HttpClient();
         public async Task<string> FetchCard(string setCode, string collectorNumber, string path)
         {
