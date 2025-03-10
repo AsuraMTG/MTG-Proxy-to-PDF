@@ -185,8 +185,9 @@
     <Content Include="favicon %281%29.ico" />
     <Content Include="favicon.ico" />
     <Content Include="MTG Proxy to PDF.ico" />
-    <None Include="Resources\Untitled.png" />
+    <Content Include="Resources\Magic_card_back.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -156,7 +156,7 @@ namespace MTG_Proxy_to_PDF
             string outputFile = Path.Combine(sourceFolderPath + "/PDF", $"{textBoxFileName.Text}.pdf");
             pdf.Save(outputFile);
             labelCounter.Text = "PDF generation is Finished!";
-            pictureBoxCard.Image = Image.FromFile("Magic_card_back.png");
+            pictureBoxCard.Image = Properties.Resources.Magic_card_back;
             textBoxFileName.Text = "";
         }
         public async Task<string> FetchCard(string setCode, string collectorNumber, string path)
@@ -483,7 +483,7 @@ namespace MTG_Proxy_to_PDF
             string outputFile = Path.Combine(sourceFolderPath + "/PDF", $"{textBoxFolderAndFileName.Text}.pdf");
             pdf.Save(outputFile);
             labelCounter.Text = "PDF generation is Finished!";
-            pictureBoxCard.Image = Image.FromFile("Magic_card_back.png");
+            pictureBoxCard.Image = Properties.Resources.Magic_card_back;
             textBoxFolderAndFileName.Text = "";
         }
 

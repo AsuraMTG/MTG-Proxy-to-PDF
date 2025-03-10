@@ -103,7 +103,7 @@
             this.pictureBoxCard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxCard.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxCard.Image")));
+            this.pictureBoxCard.Image = global::MTG_Proxy_to_PDF.Properties.Resources.Magic_card_back;
             this.pictureBoxCard.Location = new System.Drawing.Point(10, 74);
             this.pictureBoxCard.Name = "pictureBoxCard";
             this.pictureBoxCard.Size = new System.Drawing.Size(255, 340);
